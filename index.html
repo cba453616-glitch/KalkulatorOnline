@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: white;
+      color: black;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .settings-btn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .settings-menu {
+      display: none;
+      position: absolute;
+      top: 50px;
+      left: 10px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .settings-menu button {
+      display: block;
+      margin: 5px 0;
+      width: 100%;
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .calculator {
+      padding: 80px 20px 20px;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .display {
+      width: 100%;
+      font-size: 36px;
+      text-align: right;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: none;
+      background: none;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .btn {
+      font-size: 24px;
+      padding: 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #e0e0e0;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn:active {
+      background-color: #ccc;
+    }
+
+    .btn.operator {
+      color: green;
+    }
+
+    .btn.clear {
+      color: red;
+    }
+
+    .btn.equal {
+      background-color: green;
+      color: white;
+    }
+
+    .dark-mode {
+      background-color: #111;
+      color: white;
+    }
+
+    .dark-mode .settings-menu {
+      background-color: #333;
+      color: white;
+    }
+
+    .dark-mode .btn {
+      background-color: #333;
+      color: white;
+    }
+
+    .dark-mode .btn.equal {
+      background-color: #0f0;
+      color: black;
+    }
+
+    .dark-mode .display {
+      background-color: #111;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
+  <div class="settings-menu" id="settingsMenu">
+    <button onclick="setDarkMode()">🌙 Mode Gelap</button>
+    <button onclick="setLightMode()">☀️ Mode Putih</button>
+  </div>
+
+  <div class="calculator">
+    <input type="text" id="display" class="display" disabled>
+    <div class="buttons">
+      <button class="btn clear" onclick="clearDisplay()">C</button>
+      <button class="btn operator" onclick="append('%')">%</button>
+      <button class="btn operator" onclick="deleteLast()">⌫</button>
+      <button class="btn operator" onclick="append('/')">÷</button>
+
+      <button class="btn" onclick="append('7')">7</button>
+      <button class="btn" onclick="append('8')">8</button>
+      <button class="btn" onclick="append('9')">9</button>
+      <button class="btn operator" onclick="append('*')">×</button>
+
+      <button class="btn" onclick="append('4')">4</button>
+      <button class="btn" onclick="append('5')">5</button>
+      <button class="btn" onclick="append('6')">6</button>
+      <button class="btn operator" onclick="append('-')">−</button>
+
+      <button class="btn" onclick="append('1')">1</button>
+      <button class="btn" onclick="append('2')">2</button>
+      <button class="btn" onclick="append('3')">3</button>
+      <button class="btn operator" onclick="append('+')">+</button>
+
+      <button class="btn" onclick="append('00')">00</button>
+      <button class="btn" onclick="append('0')">0</button>
+      <button class="btn" onclick="append('.')">,</button>
+      <button class="btn equal" onclick="calculate()">=</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+    const settingsMenu = document.getElementById("settingsMenu");
+
+    function append(char) {
+      display.value += char;
+    }
+
+    function clearDisplay() {
+      display.value = "";
+    }
+
+    function deleteLast() {
+      display.value = display.value.slice(0, -1);
+    }
+
+    function calculate() {
+      try {
+        display.value = eval(display.value.replace(',', '.'));
+      } catch {
+        display.value = "Error";
+      }
+    }
+
+    function toggleSettings() {
+      settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function setDarkMode() {
+      document.body.classList.add('dark-mode');
+    }
+
+    function setLightMode() {
+      document.body.classList.remove('dark-mode');
+    }
+
+    // Tutup menu saat klik di luar
+    document.addEventListener('click', function(e) {
+      if (!settingsMenu.contains(e.target) && !e.target.classList.contains('settings-btn')) {
+        settingsMenu.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>
